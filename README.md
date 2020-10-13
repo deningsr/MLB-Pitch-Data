@@ -17,3 +17,13 @@
 * MLB Games Data: Contains game-level data such as home team, away team, date, and final score.
 
 * MLB Player Names Data: Contains first and last names of pitchers and batters. Used as a helper dataset to join player names.
+
+# Technologies Used
+
+* **Spark** is used in the ETL process to transform and output the data because it can handle the large volume used.
+
+* **Python** will be used as the main language due to the availability of PySpark and other packages making it a flexible option. It is also the language I am most familiar with.
+
+* **PostgresSQL** will be used as the relational database that will hold the final data. It it as good choice to store to tabular data in csv files
+
+* **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
