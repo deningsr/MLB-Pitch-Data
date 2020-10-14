@@ -18,7 +18,7 @@ class HasRowsOperator(BaseOperator):
         
         postgres_hook = PostgresHook(self.conn_id)
         rows = postgres_hook.get_records(
-            f"SELECT COUNT(*) FROM {self.table};"
+            f"""SELECT COUNT(*) FROM {self.table};"""
         )[0][0]
         
         # Raise ValueError if table is empty
