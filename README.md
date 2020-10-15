@@ -27,3 +27,31 @@
 * **PostgresSQL** will be used as the relational database that will hold the final data. It it as good choice to store to tabular data in csv files
 
 * **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
+
+## Data Model
+
+#### PostgresSQL will suffice to store the data as it sits in tabular format in csv files. PostgresSQL will also manage the size of the data as well. The database will contain two tables: Pitches and Games.
+
+1. Pitches:
+    * pitcher_id: Unique key of each pitcher in the dataset.
+    * batter_id: Unique key of each batter in the dataset.
+    * ab_id: Unique key of each at-bat in the dataset.
+    * ab_result: Result of the atbat (out, walk, run, etc..).
+    * g_id: Unique key of each game in the dataset.
+    * p_throw: Arm the pitcher is using to throw.
+    * pitch_result: Result of the pitch (ball, strike, out, etc..).
+    * pitch_type: Type of the pitch (fastball, curveball, slider, etc..).
+    * Batter's Name: First and last name of the batter
+    * Pitcher's Name: First and last name of the pitcher
+
+2. Games:
+    * attendance: Crowd attendance at the game.
+    * away_final_score: Final score of the visiting team.
+    * away_team: Name of the visiting team.
+    * date: Date of the game.
+    * elapsed_time: Total duration of the game.
+    * g_id: Unique key of each game.
+    * home_final_score: Final score of the home team.
+    * home_team: Name of the home team.
+    * start_time: Start time of game.
+    * weather: Weather at the first pitch of the game.
