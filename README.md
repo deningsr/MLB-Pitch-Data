@@ -55,3 +55,11 @@
     * home_team: Name of the home team.
     * start_time: Start time of game.
     * weather: Weather at the first pitch of the game.
+
+## Alternate Scenarios
+
+* **Data increased by 100x:** This project could be vertically scaled to accomodate such an increase of data. To implement this scaling, I would utilize a cloud storage option such as Amazon S3 and a distributed server like Redshift. Spark would still be acceptable to use in this case.
+
+* **Pipleline being run on a daily basis:** This is easily integrated in the process due to the use of Airflow. The DAG parameters would simply need to be adjusted to accomodate any changes in the running frequency.
+
+* **Mulitple parties required to access the data:** The solution to the first scenario would also satisfy this requirement as horizontally integrating this project on the cloud would allow any number of remote parties to access the data as ofthen as they so choose.
