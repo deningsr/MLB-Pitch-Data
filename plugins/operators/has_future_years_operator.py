@@ -6,32 +6,27 @@ from warnings import warn
 
 class CheckFutureYearsOperator(BaseOperator):
     """
-    Checks number of observations in Postgres table with a year in the future
-    
-    :param postgres_conn_id: reference to a specific Postgres database
-    :type postgres_conn_id: str
-    :param postgres_table_name: name of Postgres table to check
-    :type postgres_table_name: str
+    Checks number of observations in Postgres table with a year in the future.
     """
     
     @apply_defaults
     def __init__(self,
-                 postgres_conn_id,
-                 postgres_table_name,
+                 conn_id,
+                 table,
                  *args, **kwargs):
         
         super(CheckFutureYearsOperator, self).__init__(*args, **kwargs)
-        self.postgres_conn_id = postgres_conn_id
-        self.postgres_table_name = postgres_table_name
+        self.postgres_conn_id = conn_id
+        self.postgres_table_name = table
     
     def execute(self, context):
         
-        postgres_hook = PostgresHook(self.postgres_conn_id)
+        postgres_hook = PostgresHook(self.conn_id)
         n_future_years = postgres_hook.get_records(
             f"""
-            select count(*)
-            from {self.postgres_table_name}
-            where year > date_part('year', current_date);
+            SELECT COUNT(*)
+            FROM {self.table}
+            WHERE date > date_part('date', current_date);
             """
         )[0][0]
         
@@ -39,6 +34,6 @@ class CheckFutureYearsOperator(BaseOperator):
         if n_future_years > 0:
             warn(
                 f"""
-                There are {n_future_years} observations in {self.postgres_table_name} table with year in the future
+                There are {n_future_years} observations in {self.table} table with year in the future
                 """
             )
