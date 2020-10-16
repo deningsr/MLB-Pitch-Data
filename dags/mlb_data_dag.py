@@ -3,8 +3,9 @@ from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
 import logging
-from airflow.plugins.operators.check_has_rows_operator import CheckHasRowsOperator
-from airflow.plugins.helpers import sql_queries
+from plugins.operators.has_rows_operator import CheckHasRowsOperator
+from plugins.operators.has_future_years_operator import CheckHasRowsOperator
+from plugins.helpers import sql_queries
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import Variable
 
@@ -15,7 +16,7 @@ import re
 from pyspark.sql import SparkSession, Window
 from pyspark.sql import functions as F
 
-project_dir = Variable.get("project_dir")
+#project_dir = Variable.get("project_dir")
 
 default_args = {
     "start_date": datetime(2019, 1, 1),
@@ -30,7 +31,7 @@ dag = DAG(
     default_args=default_args
 )
 
-def Transform_pitch_data(input_file, input_file2, input_file3, output_file):
+def Transform_pitch_data(input_file, input_file2, input_file3, spark_output_dir):
 
     """
     This function transforms the pitches dataset and returns a new csv file.
@@ -97,11 +98,12 @@ def Transform_pitch_data(input_file, input_file2, input_file3, output_file):
         .repartition(1)
         .write
         .option("delimiter", ",")
-        .csv(output_file, mode="overwrite")
+        .csv(spark_output_dir, mode="overwrite")
     )
 
+#Transform_pitch_data('pitches.csv', 'atbats.csv', 'player_names.csv', 'output.csv')
 
-def transform_games_data(input_file, output_file):
+def transform_games_data(input_file, spark_output_dir):
 
     """
     This function transforms the games dataset and returns a new csv file.
@@ -133,6 +135,7 @@ def transform_games_data(input_file, output_file):
         .csv(output_file, mode="overwrite")
     )
 
+transform_games_data('games.csv', 'output.csv')
 
 def load_spark_csv_to_postgres(spark_csv, conn_id, table):
 
@@ -156,7 +159,7 @@ def load_spark_csv_to_postgres(spark_csv, conn_id, table):
     
     postgres_hook.bulk_load(table, spark_csv)
 
-
+"""
 transform_pitches_task = PythonOperator(
     task_id="transform_pitches",
     python_callable=transform_pitch_data,
@@ -222,6 +225,14 @@ check_games_has_rows = CheckHasRowsOperator(
 )
 
 
+check_population_future_years = CheckFutureYearsOperator(
+    task_id="check_games_future_years",
+    postgres_conn_id="postgres",
+    postgres_table_name="games",
+    dag=dag
+)
+
+
 transform_pitches_task >> load_pitches_to_postgres
 create_pitches_in_postgres >> load_pitches_to_postgres
 load_pitches_to_postgres >> check_pitches_has_rows
@@ -229,3 +240,5 @@ load_pitches_to_postgres >> check_pitches_has_rows
 transform_games_task >> load_games_to_postgres
 create_games_in_postgres >> load_games_to_postgres
 load_games_to_postgres >> check_games_has_rows
+load_games_to_postgres >> check_games_future_years
+"""
