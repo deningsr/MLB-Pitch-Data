@@ -22,7 +22,7 @@ class CheckFutureYearsOperator(BaseOperator):
     def execute(self, context):
         
         postgres_hook = PostgresHook(self.conn_id)
-        n_future_years = postgres_hook.get_records(
+        future_years = postgres_hook.get_records(
             f"""
             SELECT COUNT(*)
             FROM {self.table}
@@ -34,6 +34,6 @@ class CheckFutureYearsOperator(BaseOperator):
         if n_future_years > 0:
             warn(
                 f"""
-                There are {n_future_years} observations in {self.table} table with year in the future
+                There are {future_years} observations in {self.table} table with year in the future
                 """
             )

@@ -1,13 +1,12 @@
 from airflow import DAG
-from airflow.models import Variable
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
+from plugins.operators.Download_data_operator import DownloadDataOperator
 import logging
 from plugins.operators.has_rows_operator import CheckHasRowsOperator
 from plugins.operators.has_future_years_operator import CheckHasRowsOperator
 from plugins.helpers import sql_queries
 from airflow.hooks.postgres_hook import PostgresHook
-from airflow.models import Variable
 
 import os
 from datetime import datetime
@@ -16,7 +15,6 @@ import re
 from pyspark.sql import SparkSession, Window
 from pyspark.sql import functions as F
 
-#project_dir = Variable.get("project_dir")
 
 default_args = {
     "start_date": datetime(2019, 1, 1),
@@ -31,7 +29,7 @@ dag = DAG(
     default_args=default_args
 )
 
-def Transform_pitch_data(input_file, input_file2, input_file3, spark_output_dir):
+def Transform_pitch_data(pitches_file, atbats_file, names_file, spark_output_dir):
 
     """
     This function transforms the pitches dataset and returns a new csv file.
@@ -52,9 +50,9 @@ def Transform_pitch_data(input_file, input_file2, input_file3, spark_output_dir)
 
     # Loads datasets into Spark dataframes and transforms them
     logging.info("loading pitches dataset to SparkSession")
-    pitches_df = spark.read.csv(input_file, header=True)
-    atbats_df = spark.read.csv(input_file2, header=True)
-    names_df = spark.read.csv(input_file3, header=True)
+    pitches_df = spark.read.csv(pitches_file, header=True)
+    atbats_df = spark.read.csv(atbats_file, header=True)
+    names_df = spark.read.csv(names_file, header=True)
     pitch_types = {
         "CH": "Changeup", "CU": "Curveball", "EP": "Eephus", "FC": "Cutter",
         "FF": "Four-seam Fastball", "FO": "Pitchout (also PO)", "FS": "Splitter",
@@ -80,7 +78,9 @@ def Transform_pitch_data(input_file, input_file2, input_file3, spark_output_dir)
     df2 = df1.join(names_df, on='batter_id', how='left')
     
     df2 = df2.withColumn("Batter's Name", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
-    df2 = df2.drop('spin_rate', 'spin_dir', 'end_speed', 'start_speed', 'inning', 'top', 'type', 'p_score', 'o', 'stand', 'b_score', 'break_angle', 'break_length', 'break_y', 'ax', 'ay', 'pz', 'outs', 'zone', 'nasty', 'sz_top', 'event_num', 'b_count', 's_count', 'pitch_num', 'on_3b', 'on_2b', 'on_1b', 'az', 'sz_bot', 'sx_top', 'type_confidence', 'vx0', 'px', 'vy0', 'vz0', 'x', 'x0', 'y', 'y0', 'z0', 'pfx_x', 'pfx_z')
+    df2 = df2.drop('spin_rate', 'spin_dir', 'end_speed', 'start_speed', 'inning', 'top', 'type', 'p_score', 'o', 'stand', 'b_score',\
+                    'break_angle', 'break_length', 'break_y', 'ax', 'ay', 'pz', 'outs', 'zone', 'nasty', 'sz_top', 'event_num', 'b_count', 's_count',\
+                    'pitch_num', 'on_3b', 'on_2b', 'on_1b', 'az', 'sz_bot', 'sx_top', 'type_confidence', 'vx0', 'px', 'vy0', 'vz0', 'x', 'x0', 'y', 'y0', 'z0', 'pfx_x', 'pfx_z')
     df2 = df2.withColumnRenamed("event", "ab_result")
     df2 = df2.withColumnRenamed("code", "pitch_result")
 
@@ -101,7 +101,6 @@ def Transform_pitch_data(input_file, input_file2, input_file3, spark_output_dir)
         .csv(spark_output_dir, mode="overwrite")
     )
 
-#Transform_pitch_data('pitches.csv', 'atbats.csv', 'player_names.csv', 'output.csv')
 
 def transform_games_data(input_file, spark_output_dir):
 
@@ -159,22 +158,29 @@ def load_spark_csv_to_postgres(spark_csv, conn_id, table):
     
     postgres_hook.bulk_load(table, spark_csv)
 
-"""
+
+download_pitches_task = Download_data_operator(
+    task_id="download_pitches",
+    url="https://drive.google.com/uc?export=download&id=12I9UQBkepS9MDKQhC1Lambc82kq9Yf4R",
+    dir='data'
+    dag=dag
+)
+
 transform_pitches_task = PythonOperator(
     task_id="transform_pitches",
     python_callable=transform_pitch_data,
-    input_file1=f"{project_dir}/data/pitches.csv",
-    input_file2=f"{project_dir}/data/atbats.csv",
-    input_file3=f"{project_dir}/data/player_names.csv",
-    output_file=f"{project_dir}/data/output.csv",
+    ptiches_file="/data/pitches.csv",
+    atbats_file="/data/atbats.csv",
+    names_file="/data/player_names.csv",
+    output_file="/data/output.csv",
     dag=dag
 )
 
 transform_games_task = PythonOperator(
     task_id="transform_pitches",
     python_callable=transform_pitch_data,
-    input_file=f"{project_dir}/data/games.csv",
-    output_filel=f"{project_dir}/data/output.csv",
+    input_file="/data/games.csv",
+    output_filel="/data/output.csv",
     dag=dag
 )
 
@@ -195,7 +201,7 @@ create_games_in_postgres = PostgresOperator(
 load_pitches_to_postgres = PythonOperator(
     task_id="load_pitches_to_postgres",
     python_callable=load_spark_csv_to_postgres,
-    spark_csv=f"{project_dir}/pitches",
+    spark_csv="/pitches",
     conn_id="postgres",
     table="pitches",
     dag=dag
@@ -204,7 +210,7 @@ load_pitches_to_postgres = PythonOperator(
 load_games_to_postgres = PythonOperator(
     task_id="load_games_to_postgres",
     python_callable=load_spark_csv_to_postgres,
-    spark_csv=f"{project_dir}/games",
+    spark_csv="/games",
     conn_id="postgres",
     table="games",
     dag=dag
@@ -232,7 +238,7 @@ check_population_future_years = CheckFutureYearsOperator(
     dag=dag
 )
 
-
+download_pitches_task >> transform_pitches_task
 transform_pitches_task >> load_pitches_to_postgres
 create_pitches_in_postgres >> load_pitches_to_postgres
 load_pitches_to_postgres >> check_pitches_has_rows
@@ -241,4 +247,3 @@ transform_games_task >> load_games_to_postgres
 create_games_in_postgres >> load_games_to_postgres
 load_games_to_postgres >> check_games_has_rows
 load_games_to_postgres >> check_games_future_years
-"""
