@@ -33,7 +33,7 @@
 #### PostgresSQL will suffice to store the data as it sits in tabular format in csv files. PostgresSQL will also manage the size of the data as well. The database will contain two tables: Pitches and Games.
 
 1. Pitches:
-    * pitcher_id: Unique key of each pitcher in the dataset.
+    * <pitcher_id:> Unique key of each pitcher in the dataset.
     * batter_id: Unique key of each batter in the dataset.
     * ab_id: Unique key of each at-bat in the dataset.
     * ab_result: Result of the atbat (out, walk, run, etc..).
