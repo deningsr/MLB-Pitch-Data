@@ -3,6 +3,10 @@ from airflow.utils.decorators import apply_defaults
 from airflow.hooks.postgres_hook import PostgresHook
 
 class HasRowsOperator(BaseOperator):
+
+    """
+    Data check to ensure the Postgres table is not empty.
+    """
     
     @apply_defaults
     def __init__(self,

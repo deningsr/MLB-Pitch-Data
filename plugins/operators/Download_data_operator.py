@@ -7,12 +7,7 @@ from zipfile import ZipFile
 
 class DownloadDataOperator(BaseOperator):
     """
-    Unzips and downloads file from URL
-    
-    :param url: URL where zip file resides
-    :type url: str
-    :param unzip_dir: directory to unzip and download files to
-    :type unzip_dir: str
+    Downloads a direct link to the Pitches.csv from Google Drive
     """
     
     @apply_defaults
