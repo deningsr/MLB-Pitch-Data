@@ -28,6 +28,15 @@
 
 * **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
 
+## Running the Project
+
+* Start up a local Postgres server
+
+* Download the project directory exactly as it appears in the Github respository. This will ensure all modules are imported
+correctly and allow the project to run correctly.
+
+* Ensure <code>Airflow</code> is installed in the directory and run the DAG using <code>python mlb_data_dag.py</code> on the command line
+
 ## Data Model
 
 #### PostgresSQL will suffice to store the data as it sits in tabular format in csv files. PostgresSQL will also manage the size of the data as well. The database will contain two tables: Pitches and Games.
