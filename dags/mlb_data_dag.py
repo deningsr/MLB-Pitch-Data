@@ -1,11 +1,11 @@
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
-from plugins.operators.Download_data_operator import DownloadDataOperator
+from airflow.plugins.operators.Download_data_operator import DownloadDataOperator
 import logging
-from plugins.operators.has_rows_operator import CheckHasRowsOperator
-from plugins.operators.has_future_years_operator import CheckHasRowsOperator
-from plugins.helpers import sql_queries
+from airflow.plugins.operators.has_rows_operator import CheckHasRowsOperator
+from airflow.plugins.operators.has_future_years_operator import CheckHasRowsOperator
+from airflow.plugins.helpers import sql_queries
 from airflow.hooks.postgres_hook import PostgresHook
 
 import os
@@ -162,7 +162,7 @@ def load_spark_csv_to_postgres(spark_csv, conn_id, table):
 download_pitches_task = Download_data_operator(
     task_id="download_pitches",
     url="https://drive.google.com/uc?export=download&id=12I9UQBkepS9MDKQhC1Lambc82kq9Yf4R",
-    dir='data'
+    dir='data',
     dag=dag
 )
 

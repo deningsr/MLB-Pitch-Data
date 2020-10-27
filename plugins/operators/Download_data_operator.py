@@ -18,7 +18,7 @@ class DownloadDataOperator(BaseOperator):
         
         super(DownloadDataOperator, self).__init__(*args, **kwargs)
         self.url = url
-        self.unzip_dir = unzip_dir
+        self.dir = dir
     
     def execute(self, context):
         response = get(self.url)
