@@ -3,8 +3,8 @@ from airflow.operators.python_operator import PythonOperator
 from airflow.operators.postgres_operator import PostgresOperator
 from airflow.plugins.operators.Download_data_operator import DownloadDataOperator
 import logging
-from airflow.plugins.operators.has_rows_operator import CheckHasRowsOperator
-from airflow.plugins.operators.has_future_years_operator import CheckHasRowsOperator
+from airflow.plugins.operators.Has_rows_operator import CheckHasRowsOperator
+from airflow.plugins.operators.Has_future_years_operator import CheckHasRowsOperator
 from airflow.plugins.helpers import sql_queries
 from airflow.hooks.postgres_hook import PostgresHook
 
