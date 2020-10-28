@@ -6,6 +6,13 @@
 
 #### This project is intended to provide sports analysts, scouts, and baseball enthusiasts with a wealth of pitch-level data for MLB games between 2015-2018. The data can support these parties with trends on pitches, batters, and pitch types and can help answer a variety of questions.
 
+## Project Scope amd Data Gathering
+
+* The project will utilize MLB pitch and game data between 2015-2018 in the form of four csv files from Kaggle.com
+
+* The most usable case for this data would be analytic tables to provide scouts and baseball enthusiasts with pitch-level data. They can run queries to determine which pitchers throw which pitches and and which batters are most successful.
+
+
 ## Data Sources
 
 #### The source data is taken from the MLB Pitch Data 2015-2018 found on Kaggle.com. Several individual datasets are pulled from this source and are detailed below:
