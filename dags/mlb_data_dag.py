@@ -4,7 +4,7 @@ from airflow.operators.postgres_operator import PostgresOperator
 from airflow.plugins.operators.Download_data_operator import DownloadDataOperator
 import logging
 from airflow.plugins.operators.Has_rows_operator import CheckHasRowsOperator
-from airflow.plugins.operators.Has_future_years_operator import CheckHasRowsOperator
+from airflow.plugins.operators.Has_future_years_operator import CheckFutureYearsOperator
 from airflow.plugins.helpers import sql_queries
 from airflow.hooks.postgres_hook import PostgresHook
 
@@ -77,7 +77,7 @@ def Transform_pitch_data(pitches_file, atbats_file, names_file, spark_output_dir
     
     df2 = df1.join(names_df, on='batter_id', how='left')
     
-    df2 = df2.withColumn("Batter's Name", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
+    df2 = df2.withColumn("batter_name", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
     df2 = df2.drop('spin_rate', 'spin_dir', 'end_speed', 'start_speed', 'inning', 'top', 'type', 'p_score', 'o', 'stand', 'b_score',\
                     'break_angle', 'break_length', 'break_y', 'ax', 'ay', 'pz', 'outs', 'zone', 'nasty', 'sz_top', 'event_num', 'b_count', 's_count',\
                     'pitch_num', 'on_3b', 'on_2b', 'on_1b', 'az', 'sz_bot', 'sx_top', 'type_confidence', 'vx0', 'px', 'vy0', 'vz0', 'x', 'x0', 'y', 'y0', 'z0', 'pfx_x', 'pfx_z')
@@ -86,7 +86,7 @@ def Transform_pitch_data(pitches_file, atbats_file, names_file, spark_output_dir
 
     names_df = names_df.selectExpr("batter_id as pitcher_id", 'fname as fname', 'lname as lname')
     final_df = df2.join(names_df, on='pitcher_id', how='left')
-    final_df = final_df.withColumn("Pitcher's Name", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
+    final_df = final_df.withColumn("pitcher_ame", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
    
     pitches = final_df.replace(to_replace=pitch_types, subset=['pitch_type'])
     pitches = final_df.replace(to_replace=pitch_results, subset=['code'])

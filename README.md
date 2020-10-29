@@ -2,7 +2,7 @@
 
 #### MLB Pitch Data is my capstone project for the Udacity Data Engineering Nanodegree Program. Its purpose is to display what I have learned during the course and showcase my skills. I have chosen to focus on using big data for this project by utilizing technologies such Spark, PostgresSQL, and Airflow to create a working ETL pipeline.
 
-## Purpose
+## Goal
 
 #### This project is intended to provide sports analysts, scouts, and baseball enthusiasts with a wealth of pitch-level data for MLB games between 2015-2018. The data can support these parties with trends on pitches, batters, and pitch types and can help answer a variety of questions.
 
@@ -11,6 +11,10 @@
 * The project will utilize MLB pitch and game data between 2015-2018 in the form of four csv files from Kaggle.com
 
 * The most usable case for this data would be analytic tables to provide scouts and baseball enthusiasts with pitch-level data. They can run queries to determine which pitchers throw which pitches and and which batters are most successful.
+
+## Exploring and Accessing the Data
+
+* All datasets required some EDA prior to being used in the project. This included applying functions to several rows to clarify values.
 
 
 ## Data Sources
@@ -57,8 +61,8 @@ correctly and allow the project to run correctly.
     * <code>p_throw</code>: Arm the pitcher is using to throw.
     * <code>pitch_result</code>: Result of the pitch (ball, strike, out, etc..).
     * <code>pitch_type</code>: Type of the pitch (fastball, curveball, slider, etc..).
-    * <code>Batter's Name</code>: First and last name of the batter
-    * <code>Pitcher's Name:</code> First and last name of the pitcher
+    * <code>batter_name</code>: First and last name of the batter
+    * <code>pitcher_name:</code> First and last name of the pitcher
 
 2. Games:
     * <code>attendance</code>: Crowd attendance at the game.
@@ -71,6 +75,19 @@ correctly and allow the project to run correctly.
     * <code>home_team</code>: Name of the home team.
     * <code>start_time</code>: Start time of game.
     * <code>weather</code>: Weather at the first pitch of the game.
+
+## Updading the Datasets
+
+* This data could be updated annually after each MLB season is completed. Since the length of the season varies each year, it makes sense to perform annual updates.
+
+## Sample Queries
+
+#### What are the most common pitches thrown by each pitcher?
+
+<code>
+SELECT Pitcher's 
+
+</code>
 
 ## Alternate Scenarios
 
