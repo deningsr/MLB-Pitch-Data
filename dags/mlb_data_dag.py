@@ -86,7 +86,7 @@ def Transform_pitch_data(pitches_file, atbats_file, names_file, spark_output_dir
 
     names_df = names_df.selectExpr("batter_id as pitcher_id", 'fname as fname', 'lname as lname')
     final_df = df2.join(names_df, on='pitcher_id', how='left')
-    final_df = final_df.withColumn("pitcher_ame", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
+    final_df = final_df.withColumn("pitcher_name", F.concat(F.col('fname'),F.lit(' '),F.col('lname'))).drop('fname', 'lname')
    
     pitches = final_df.replace(to_replace=pitch_types, subset=['pitch_type'])
     pitches = final_df.replace(to_replace=pitch_results, subset=['code'])

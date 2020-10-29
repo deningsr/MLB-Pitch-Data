@@ -48,7 +48,7 @@ correctly and allow the project to run correctly.
 
 * Ensure <code>Airflow</code> is installed in the directory and run the DAG using <code>python mlb_data_dag.py</code> on the command line
 
-## Data Model
+## Data Model and Data Dictionary
 
 #### PostgresSQL will suffice to store the data as it sits in tabular format in csv files. PostgresSQL will also manage the size of the data as well. The database will contain two tables: Pitches and Games.
 
@@ -85,8 +85,19 @@ correctly and allow the project to run correctly.
 #### What are the most common pitches thrown by each pitcher?
 
 <code>
-SELECT Pitcher's 
+SELECT pitcher_name, pitch_type, COUNT(*)
+FROM pitches
+GROUP BY pitcher_name, pitch_type
+ORDER BY COUNT(*) DESC;
+</code>
 
+#### Which batter's recorded the most hits during the period?
+
+<code>
+SELECT batter_name, pitch_type, COUNT(*)
+FROM pitches
+GROUP BY pitcher_name, pitch_type
+ORDER BY COUNT(*) DESC;
 </code>
 
 ## Alternate Scenarios
