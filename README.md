@@ -21,9 +21,9 @@
 
 #### The source data is taken from the MLB Pitch Data 2015-2018 found on Kaggle.com. Several individual datasets are pulled from this source and are detailed below:
 
-* MLB Pitch Data: Contains pitch-level data such as pitcher, batter, pitch type, speed of pitch, and result of the pitch (strike, ball, out, etc..)
+* MLB Pitch Data: Contains pitch-level data such as pitcher, batter, pitch type, speed of pitch, and result of the pitch (strike, ball, out, etc..). To access this csv, please refer to the direct link in the <code>download_pitches_task</code> in the DAG.
 
-* MLB at-bat Data: Contains at-bat-level data such as pitcher, batter, at-bat result, and current inning.
+* MLB At-Bat Data: Contains at-bat-level data such as pitcher, batter, at-bat result, and current inning.
 
 * MLB Games Data: Contains game-level data such as home team, away team, date, and final score.
 
@@ -39,19 +39,12 @@
 
 * **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
 
-## Running the Project
-
-* Start up a local Postgres server
-
-* Download the project directory exactly as it appears in the Github respository. This will ensure all modules are imported
-correctly and allow the project to run correctly.
-
-* Ensure <code>Airflow</code> is installed in the directory and run the DAG using <code>python mlb_data_dag.py</code> on the command line
-
 ## Data Model and Data Dictionary
 
-#### PostgresSQL will suffice to store the data as it sits in tabular format in csv files. PostgresSQL will also manage the size of the data as well. The database will contain two tables: Pitches and Games.
+#### PostgresSQL was chosen as the best data model for several reasons. The data sits in tabular format in csv files and is fairly large. Postgres will also allow for ah hoc queries on the dataset. The database will contain two tables: Pitches and Games.
 
+## Please refer to <code>sql_queries,py</code> for data constraints and types.
+ 
 1. Pitches:
     * <code>pitcher_id</code>: Unique key of each pitcher in the dataset.
     * <code>batter_id</code>: Unique key of each batter in the dataset.
@@ -94,9 +87,10 @@ ORDER BY COUNT(*) DESC;
 #### Which batter's recorded the most hits during the period?
 
 <code>
-SELECT batter_name, pitch_type, COUNT(*)
+SELECT batter_name, COUNT(*)
 FROM pitches
-GROUP BY pitcher_name, pitch_type
+WHERE ab_result = 'hit'
+GROUP BY batter_name
 ORDER BY COUNT(*) DESC;
 </code>
 
@@ -107,3 +101,12 @@ ORDER BY COUNT(*) DESC;
 * **Pipleline being run on a daily basis:** This is easily integrated in the process due to the use of Airflow. The DAG parameters would simply need to be adjusted to accomodate any changes in the running frequency.
 
 * **Mulitple parties required to access the data:** The solution to the first scenario would also satisfy this requirement as horizontally integrating this project on the cloud would allow any number of remote parties to access the data as ofthen as they so choose.
+
+## Running the Project
+
+* Start up a local Postgres server
+
+* Download the project directory exactly as it appears in the Github respository. This will ensure all modules are imported
+correctly and allow the project to run correctly.
+
+* Ensure <code>Airflow</code> is installed in the directory and run the DAG using <code>python mlb_data_dag.py</code> on the command line
