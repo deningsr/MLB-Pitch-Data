@@ -6,7 +6,7 @@
 
 #### This project is intended to provide sports analysts, scouts, and baseball enthusiasts with a wealth of pitch-level data for MLB games between 2015-2018. The data can support these parties with trends on pitches, batters, and pitch types and can help answer a variety of questions.
 
-## Project Scope amd Data Gathering
+## Project Scope and Data Gathering
 
 * The project will utilize MLB pitch and game data between 2015-2018 in the form of four csv files from Kaggle.com
 
