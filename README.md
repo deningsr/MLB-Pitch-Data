@@ -84,7 +84,7 @@
 
 #### Which batter's recorded the most hits during the period?
 
-<code>SELECT batter_name, COUNT(*)</code>
+<code>SELECT batter_name, COUNT(*)/</code>
 FROM pitches
 WHERE ab_result = 'hit'
 GROUP BY batter_name
