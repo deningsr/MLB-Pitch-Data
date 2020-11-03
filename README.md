@@ -2,7 +2,7 @@
 
 #### MLB Pitch Data is my capstone project for the Udacity Data Engineering Nanodegree Program. Its purpose is to display what I have learned during the course and showcase my skills. I have chosen to focus on using big data for this project by utilizing technologies such Spark, PostgresSQL, and Airflow to create a working ETL pipeline.
 
-## Goal
+## Purpose
 
 #### This project is intended to provide sports analysts, scouts, and baseball enthusiasts with a wealth of pitch-level data for MLB games between 2015-2018. The data can support these parties with trends on pitches, batters, and pitch types and can help answer a variety of questions.
 
@@ -15,7 +15,6 @@
 ## Exploring and Accessing the Data
 
 * All datasets required some EDA prior to being used in the project. This included applying functions to several rows to clarify values.
-
 
 ## Data Sources
 
@@ -39,23 +38,21 @@
 
 * **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
 
-## Data Model and Data Dictionary
+## Data Model
 
-#### PostgresSQL was chosen as the best data model for several reasons. The data sits in tabular format in csv files and is fairly large. Postgres will also allow for ah hoc queries on the dataset. The database will contain two tables: Pitches and Games.
-
-#### Please refer to <code>sql_queries,py</code> for data constraints and types.
+#### PostgresSQL was chosen as the best data model for several reasons. The data sits in tabular format in csv files and is fairly large. Postgres will also allow for ah hoc queries on the dataset. The database will contain two tables: Pitches and Games. Please refer to <code>sql_queries,py</code> for data constraints and types.
  
 1. Pitches table:
     * <code>pitcher_id</code>: Unique key of each pitcher in the dataset.
     * <code>batter_id</code>: Unique key of each batter in the dataset.
     * <code>ab_id</code>: Unique key of each at-bat in the dataset.
-    * <code>ab_result</code>: Result of the atbat (out, walk, run, etc..).
+    * <code>ab_result</code>: Result of the atbat (out, walk, run, etc..)
     * <code>g_id</code>: Unique key of each game in the dataset.
     * <code>p_throw</code>: Arm the pitcher is using to throw.
-    * <code>pitch_result</code>: Result of the pitch (ball, strike, out, etc..).
-    * <code>pitch_type</code>: Type of the pitch (fastball, curveball, slider, etc..).
-    * <code>batter_name</code>: First and last name of the batter
-    * <code>pitcher_name:</code> First and last name of the pitcher
+    * <code>pitch_result</code>: Result of the pitch (ball, strike, out, etc..)
+    * <code>pitch_type</code>: Type of the pitch (fastball, curveball, slider, etc..)
+    * <code>batter_name</code>: First and last name of the batter.
+    * <code>pitcher_name:</code> First and last name of the pitcher.
 
 2. Games table:
     * <code>attendance</code>: Crowd attendance at the game.
