@@ -43,9 +43,9 @@
 
 #### PostgresSQL was chosen as the best data model for several reasons. The data sits in tabular format in csv files and is fairly large. Postgres will also allow for ah hoc queries on the dataset. The database will contain two tables: Pitches and Games.
 
-## Please refer to <code>sql_queries,py</code> for data constraints and types.
+#### Please refer to <code>sql_queries,py</code> for data constraints and types.
  
-1. Pitches:
+1. Pitches table:
     * <code>pitcher_id</code>: Unique key of each pitcher in the dataset.
     * <code>batter_id</code>: Unique key of each batter in the dataset.
     * <code>ab_id</code>: Unique key of each at-bat in the dataset.
@@ -57,7 +57,7 @@
     * <code>batter_name</code>: First and last name of the batter
     * <code>pitcher_name:</code> First and last name of the pitcher
 
-2. Games:
+2. Games table:
     * <code>attendance</code>: Crowd attendance at the game.
     * <code>away_final_score</code>: Final score of the visiting team.
     * <code>away_team</code>: Name of the visiting team.
@@ -77,17 +77,14 @@
 
 #### What are the most common pitches thrown by each pitcher?
 
-<code>
-SELECT pitcher_name, pitch_type, COUNT(*)
-FROM pitches
-GROUP BY pitcher_name, pitch_type
-ORDER BY COUNT(*) DESC;
-</code>
+<code>SELECT pitcher_name, pitch_type, COUNT(*)</code>
+<code>FROM pitches</code>
+<code>GROUP BY pitcher_name, pitch_type</code>
+<code>ORDER BY COUNT(*) DESC;</code>
 
 #### Which batter's recorded the most hits during the period?
 
-<code>
-SELECT batter_name, COUNT(*)
+<code>SELECT batter_name, COUNT(*)</code>
 FROM pitches
 WHERE ab_result = 'hit'
 GROUP BY batter_name
