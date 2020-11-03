@@ -38,7 +38,7 @@
 
 * **Airflow** will be used as it is the premier tool for maintaining ETL pipelines and will allow this project to be maintained and automated.
 
-## Data Model
+## Data Model Used
 
 #### PostgresSQL was chosen as the best data model for several reasons. The data sits in tabular format in csv files and is fairly large. Postgres will also allow for ah hoc queries on the dataset. The database will contain two tables: Pitches and Games. Please refer to <code>sql_queries,py</code> for data constraints and types.
  
