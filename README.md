@@ -77,19 +77,18 @@
 
 #### What are the most common pitches thrown by each pitcher?
 
-<code>SELECT pitcher_name, pitch_type, COUNT(*)</code>
-<code>FROM pitches</code>
-<code>GROUP BY pitcher_name, pitch_type</code>
+<code>SELECT pitcher_name, pitch_type, COUNT(*)</code><br/>
+<code>FROM pitches</code><br/>
+<code>GROUP BY pitcher_name, pitch_type</code><br/>
 <code>ORDER BY COUNT(*) DESC;</code>
 
 #### Which batter's recorded the most hits during the period?
 
-<code>SELECT batter_name, COUNT(*)/</code>
-FROM pitches
-WHERE ab_result = 'hit'
-GROUP BY batter_name
-ORDER BY COUNT(*) DESC;
-</code>
+<code>SELECT batter_name, COUNT(*)</code><br/>
+<code>FROM pitches</code><br/>
+<code>WHERE ab_result = 'hit'</code><br/>
+<code>GROUP BY batter_name</code><br/>
+<code>ORDER BY COUNT(*) DESC;</code>
 
 ## Alternate Scenarios
 
